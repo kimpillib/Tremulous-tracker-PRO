@@ -87,7 +87,7 @@ class Q3Master
 				array_pop($list);
 				
 				// player team handling
-				$teams_config = trim($list['P'], '-');
+				$teams_config = str_replace('-', '', $list['P']);
 				$team_convert = array(0 => 'Spectator', 1 => 'Aliens', 2 => 'Humans');
 			   
 				$players = array();
