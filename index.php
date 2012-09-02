@@ -2,7 +2,7 @@
 
 function explode_player($player_string)
 {
-        $parts = explode(' ', $player_string);
+	$parts = explode(' ', $player_string);
 	
 	// recompose the name, that may have spaces
 	$name = '';
@@ -19,7 +19,6 @@ function explode_player($player_string)
 	$result['score'] = $parts[0];
 	$result['ping'] = $parts[1];
 	$result['name'] = $name;
-	
 	return $result;
 }
 
@@ -86,6 +85,10 @@ class Q3Master
 				   $list[@$list3[$i]] = @$list3[$i + 1];
 				}
 				array_pop($list);
+				
+				// player team handling
+				$teams_config = trim($list['P'], '-');
+				$team_convert = array(0 => 'Spectator', 1 => 'Aliens', 2 => 'Humans');
 			   
 				$players = array();
 				foreach($lines as $id => $player)
@@ -93,10 +96,15 @@ class Q3Master
 				    if($id != 0 AND $id != 1)
 				    {
 						if ($player != '')
-							$players[] = explode_player($player);
+						{
+							$player = explode_player($player);
+							
+							$player['team'] = $team_convert[$teams_config[count($players)]];
+							
+							$players[] = $player;
+						}
 				    }
 				}
-				array_pop($players);
 			   
 				$infos = array();
 				$infos['server_info'] = $list;
